@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .postcard {
+    flex-wrap: wrap;
+    box-shadow: 0 10px 30px -12px rgb(255, 255, 255);
+    background-color: #cacacade;
+    border-radius: 10px;
+    margin: 2em auto;
+    margin-right: 300px;
+    display: block;
+    position: relative;
+    color: #fff;
+    width: 120%;
+    overflow: hidden;
+    float: left;
+    float: right;
+
+
+  }
+
+
+  .postcard__title {
+    margin: 20rem 0;
+    color: #ffffff;
+    margin-right: 800px;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: auto;
+  }
+
+  .postcard__title__prep {
+    margin: 1.5rem 0;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 200;
+    line-height: 1.2;
+    font-size: 2.5rem;
+    color: #000000;
+  }
+
+  .postcard .postcard__img {
+    border-radius: 10px;
+    max-height: 90%;
+    max-width: 90%;
+    object-fit: cover;
+    position: relative;
+    margin: 25px 0px 0px 20px;
+
+  }
+
+  .postcard .postcard__text {
+    padding: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: #000000;
+  }
+
+  .duree {
+
+    display: inline-block;
+    background: #b40a0a8e;
+    border-radius: 3px;
+    padding: 20px 40px;
+    margin: 10px 5px 10px 20px;
+    cursor: default;
+    user-select: none;
+    transition: background-color 0.3s;
+  }
+
+  .container {
+
+    left: 20cm;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .title-duree {
+    font-size: 2.5rem;
+    margin: 25px 0px 0px 20px;
+    color: #000000;
+
+  }
+
+  .Ingredients-title {
+    font-size: 3rem;
+    margin: 25px 0px 0px 20px;
+    color: #000000;
+
+  }
+
+  .postcard_ing_txt {
+    margin: 25px 0px 0px 20px;
+    color: #000000;
+  }
+
+  /*comment section*/
+  .review-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #000000;
+    margin-left: 1px;
+  }
+
+  .review-section h2 {
+    margin-top: 0;
+  }
+
+  .review-form label {
+    display: block;
+    margin-bottom: 5px;
+
+  }
+
+  .review-form input[type="text"],
+  .review-form textarea {
+    display: block;
+    width: 300%;
+    padding: 35px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .review-form input[type="submit"] {
+    background-color: #cf1f1fc0;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+  }
+
+  .comment-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .comment {
+    margin-bottom: 20px;
+    display: flex;
+  }
+
+  .user-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .comment-details {
+    flex: 1;
+  }
+
+  .comment-author {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+
+  .comment-date {
+    font-style: italic;
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+
+  .comment-text {
+    margin-top: 0;
+  }
+</style>
+
+
+
+<h1 class="postcard__title">{{recette.nom}}</h1>
+<article class="postcard">
+  <img class="postcard__img" src="{{recette.image.url}}" alt="Image Title" width="750" height="500" />
+  <div class="container">
+    <ul>
+      <h1 class="title-duree">Duree</h1>
+      <li class="duree"><i class="tag-duree"></i>{{recette.temps}} Min</li>
+      <h2 class="Ingredients-title">Ingredients</h2>
+      <div class="postcard_ing_txt">
+        <ul style="list-style-type: square;">
+          {% for i in ingredients %}
+          <h4><li>{{i.quantity}} {{i.unit}} de {{i.name}} . <a href="{% url 'delete_ingredient' i.id %}" onclick="return confirm('Confirmation?')"><i class="fas fa-trash mr-2"></i></a></li></h4><br></br>
+          {% endfor %}
+        </ul>
+      </div>
+      
+  </div>
+  </ul>
+  <div class="postcard__text">
+    <h1 class="postcard__title__prep">Preparation</a></h1>
+    <div class="postcard__preview-txt">
+      {{recette.preparation}}
+    </div>
+  </div>
+</article>
+<article class="postcard">
+  <div class="review-section">
+    <h2>Reviews ({{count}})</h2>
+    <ul class="comment-list">
+      {% for r in reviews %}
+      <li class="comment">
+        <div class="user-icon"></div>
+        <div class="comment-details">
+          <h3 class="comment-author">{{r.user.first_name }}</h3>
+          <p class="comment-text">{{r.comment }}</p>
+          <p class="comment-date">reviewd: {{r.created_at}}</p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    <h2>Write Your Review</h2>
+    <form class="review-form" method=POST>
+      {% csrf_token %}
+      <input type="hidden" name="user" value="{{user.id}}" />
+      <input type="hidden" name="recette" value="{{recette.id}}" />
+      <input  name="comment" class="form-control mb-2 " />
+      {% if user.is_authenticated %}
+      <button type="submit" class="btn btn-outline-success">Comment</button>
+      {% else %}
+      To review, you have to  <a href="{% url 'login' %}" id="signup-link">LOGIN</a>
+      {% endif %}
+    </form>
+  </div>
+  </div>
+
+  {% endblock %}

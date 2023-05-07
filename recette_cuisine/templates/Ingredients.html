@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block titre %}
+Cuisine | ingredients
+{% endblock %}
+{% block content %}
+<div class="container">
+    <form class="d-flex" role="search" action="{%url 'search_ingredient' %}">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="kw">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      <a href="{% url 'create_ingredient' %}" class="btn btn-outline-primary col-12 mt-2">Ajouter ingredient</a>
+
+<table class="table table-hover mt-3">
+    <thead>
+    <th>ID</th>
+    <th>Nom</th>
+    <th>quantity</th>
+    <th>Unit</th>
+    <th>Recette</th>
+    <th>Action</th>
+    </thead>
+    <tbody>
+    {% for ingredient in ingredients %}
+        <tr>
+            <td>{{ingredient.id}}</td>
+            <td>{{ingredient.name}}</td>
+            <td>{{ingredient.quantity}}</td>
+            <td>{{ingredient.unit}}</td>
+            <td>{{ingredient.recipe.nom}}</td>
+            <td>
+                <a href="#" class="btn btn-outline-info col-4" >Update</a>
+                <a href="{% url 'delete_ingredient' ingredient.id %}" class="btn btn-outline-danger col-4" onclick="return confirm('Confirmation?')">delete</a>
+                
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
+</div>
+
+
+{%endblock %}
+

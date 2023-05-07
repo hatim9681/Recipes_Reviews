@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block titre %}
+Cuisine | recettes
+{% endblock %}
+{% block content %}
+<form class="d-flex" role="search" action="{%url 'search_recette' %}">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="kw">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+<a href="{% url 'create_recette' %}" class="btn btn-outline-primary col-12 mt-2">Ajouter recette</a>
+
+<table class="table table-hover mt-3">
+    <thead>
+    <th>ID</th>
+    <th>Image</th>
+    <th>NOM</th>
+    <th>Temps</th>
+    <th>Description</th>
+    <th>Action</th>
+    </thead>
+    <tbody>
+    {% for recette in recettes %}
+        <tr>
+            <td>{{recette.id}}</td>
+            <td><a href="{% url 'recette_info' recette.id %}" ><img src="{{recette.image.url}}" width=100 height=100></a></td>
+            <td>{{recette.nom}}</td>
+            <td>{{recette.temps}}</td>
+            <td>{{recette.preparation}}</td>
+            <td>
+                <a href="{% url 'update_recette' recette.id %}" class="btn btn-outline-info col-6" >Update</a><br><p></p>
+                <a href="{% url 'delete_recette' recette.id %}" class="btn btn-outline-danger col-6" onclick="return confirm('Confirmation?')">delete</a>
+                
+            </td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+</table>
+
+
+{%endblock %}
+

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<div class="bannerLogin">
+  <form  method="post" class="sign-in-form" name="form">
+      {% csrf_token %}
+      <h1>SIGN IN</h1>
+      <h3 class="title2">Email Adress</h3>
+      <input type="name" name="username" class="box" placeholder="Enter Your Email">
+      <h3 class="title2">Name</h3>
+      <input type="text" name="first_name" class="box" placeholder="Enter Your name">
+      <h4 class="title2">Password</h4>
+      <input type="password" name="password1" class="box" placeholder="Enter Your Password">
+      <h5 class="title2">Confirm password</h5>
+      <input type="password" name="password2" class="box" placeholder=" Confirm Your Password">
+      <input type="submit" value="Sign In" class="submit-sign-in">
+      <div class="member">
+          You are a member <a href="{% url 'login' %}" id="login-link">Log in</a>
+      </div>
+      
+    
+  </form>
+</div>
+{% endblock %}

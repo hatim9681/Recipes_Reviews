@@ -1,0 +1,10 @@
+{% extends 'base.html'%}
+{%block content %}
+<h1>Modification d'ingredient</h1>
+<form method="post" >
+    {% csrf_token%}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-outline-success col-12">Update Ingredient</button>
+
+</form>
+{% endblock %}
